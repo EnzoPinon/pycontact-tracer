@@ -15,7 +15,7 @@ class Login:
         second_label = Label(login_Frame, text="We're happy to see you again.")
         second_label.place(x=110, y=50)
         user_name = Label(login_Frame, text = "Username").place(x = 40, y = 60)
-        passcode = Label(login_Frame, text = "User Password").place(x = 40, y = 60)
+        passcode = Label(login_Frame, text = "User Password").place(x = 40, y = 100)
         user_name_input_area = Entry(login_Frame,width = 30).place(x = 110, y = 60) 
         user_password_entry_area = Entry(login_Frame,width = 30).place(x = 110,y = 100)
         login_window.mainloop()
