@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter.ttk import Label, LabelFrame
+from functools import partial
+from subprocess import call
 
 class Login:
     
@@ -18,4 +20,12 @@ class Login:
         passcode = Label(login_Frame, text = "Password:").place(x = 40, y = 120)
         user_name_input_area = Entry(login_Frame,width = 30).place(x = 110, y = 80) 
         user_password_entry_area = Entry(login_Frame,width = 30).place(x = 110,y = 120)
+
+        def return_prompt():
+            login_window.destroy()
+            call(["python", "pycontact.py"])
+
+        return_prompt = partial(return_prompt)
+
+        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=40, y=150)
         login_window.mainloop()
