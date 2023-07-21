@@ -17,9 +17,9 @@ class Login:
         second_label = Label(login_Frame, text="We're happy to see you again.")
         second_label.place(x=110, y=50)
         user_name = Label(login_Frame, text = "Username:").place(x = 40, y = 80)
-        passcode = Label(login_Frame, text = "Password:").place(x = 40, y = 120)
+        passcode = Label(login_Frame, text = "Password:",).place(x = 40, y = 120)
         user_name_input_area = Entry(login_Frame,width = 30).place(x = 110, y = 80) 
-        user_password_entry_area = Entry(login_Frame,width = 30).place(x = 110,y = 120)
+        user_password_entry_area = Entry(login_Frame, show='*',width = 30).place(x = 110,y = 120)
 
         def return_prompt():
             login_window.destroy()
