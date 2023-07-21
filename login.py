@@ -6,7 +6,7 @@ class Login:
     def prompt():
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
-        login_window.geometry('400x400')
+        login_window.geometry('400x300')
 
         login_Frame = LabelFrame(login_window, text='Login to PyTracer')
         login_Frame.pack(expand='yes', fill='both')
