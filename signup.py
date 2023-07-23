@@ -2,7 +2,9 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
+from pathlib import Path
 from subprocess import call
+import csv
 
 class Signup:
     
@@ -37,16 +39,18 @@ class Signup:
         confirm_password_entry = Entry(login_Frame, show='*',width = 30, textvariable=confirm_password)
         confirm_password_entry.place(x = 170,y = 160)
 
-        def login_try(new_username, new_password, confirm_password):
-            username = str(new_username)
-            password = str(new_password)
-            validate = str(confirm_password)
+        def login_try():
+            username = str(new_username.get())
+            password = str(new_password.get())
+            validate = str(confirm_password.get())
+            print(validate)
+            print(password)
             if password != validate:
                 messagebox.showerror('password incorrect', 'The password does not match. Please try again!')
             login = Signup.createAccount(username, password)
             if login == True:
                 login_window.destroy()
-        login_try = partial(login_try, new_username, new_password, confirm_password)
+        login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=200)
         go_back = Button(login_Frame, text="Register", command=login_try).place(x=280, y=200)
@@ -76,4 +80,14 @@ class Signup:
         login_window.mainloop()
     
     def createAccount(username, password):
-        pass
+        account_list = Path('./accounts.csv')
+        print(account_list)
+        if account_list.is_file():
+            pass
+        if account_list.is_file() == False:
+            with open('accounts.csv', 'w') as new_file:
+                writer = csv.writer(new_file)
+                writer.writerow(['username',  'password', 'is_positive', 'vacc_status', 'symptoms', 'expose_symptoms', 'is_close_contact', 'has_been_tested', 'phone_number', 'email'])
+            messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you. Please make an account first!")
+            login = False
+            return login

@@ -46,13 +46,13 @@ class Login:
         user_password_entry_area = Entry(login_Frame, show='*',width = 30, textvariable=logpass)
         user_password_entry_area.place(x = 110,y = 120)
 
-        def login_try(logname, logpass):
-            username = str(logname)
-            password = str(logpass)
+        def login_try():
+            username = str(logname.get())
+            password = str(logpass.get())
             login = Login.login_authenticator(username, password)
             if login == True:
                 login_window.destroy()
-        login_try = partial(login_try, logname, logpass)
+        login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=130, y=170)
         go_auth = Button(login_Frame, text='Log in', command=login_try)
