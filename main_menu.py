@@ -4,4 +4,9 @@ from functools import partial
 from subprocess import call
 
 class main_menu:
-    pass
+    
+    def user_menu():
+        pass
+
+    def user_settings():
+        pass
