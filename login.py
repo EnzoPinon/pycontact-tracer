@@ -84,7 +84,9 @@ class Login:
                                 login = False
                                 return login
         if account_list.is_file() == False:
-            open('accounts.csv', 'x')
-            messagebox.showinfo('Database created',"The database does not exist and has been created. Please make an account first!")
+            with open('accounts.csv', 'w') as new_file:
+                writer = csv.writer(new_file)
+                writer.writerow(['username',  'password', 'is_positive', 'vacc_status', 'symptoms', 'expose_symptoms', 'is_close_contact', 'has_been_tested', 'phone_number', 'email'])
+            messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you. Please make an account first!")
             login = False
             return login
