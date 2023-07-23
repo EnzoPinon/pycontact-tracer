@@ -89,9 +89,16 @@ class Login:
                     typed_credentials = [username, password]
                     recorded = [row[0], row[1]]
                     if recorded == typed_credentials:
+                        Login.login_start(username)
                         login = True
                         return login
                 if user_exist == False:
                     messagebox.showerror("Invalid Credentials", "The password and/or username is invalid. Please try again.")
                     login = False
                     return
+                
+    def login_start(username):
+        with open('active_session.csv', 'w') as active_session:
+            writer = csv.writer(active_session)
+            writer.writerow([username])
+        active_session.close()
