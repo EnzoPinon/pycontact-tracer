@@ -47,11 +47,13 @@ class Login:
         user_password_entry_area.place(x = 110,y = 120)
 
         def login_try():
-            username = str(logname.get())
-            password = str(logpass.get())
-            login = Login.login_authenticator(username, password)
-            if login == True:
-                login_window.destroy()
+            db_exist = Login.validate_database()
+            if db_exist == True:
+                username = str(logname.get())
+                password = str(logpass.get())
+                login = Login.authenticate(username, password)
+                if login == True:
+                    login_window.destroy()
         login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=130, y=170)
@@ -61,32 +63,34 @@ class Login:
         show_password.place(x=310, y=117)
         login_window.mainloop()
     
-    def login_authenticator(username, password):
-        account_list = Path('./accounts.csv')
-        if account_list.is_file():
-            with open('accounts.csv', 'r') as user_list:
-                user_list_reader = csv.reader(user_list)
-                for column in user_list_reader:
-                    user_find_value = column[0]
-                    for row in user_find_value:
-                        if str(row) == username:
-                            user_login = row
-                            for column in user_login:
-                                recorded_password = str(column[1])
-                                if recorded_password != password:
-                                    messagebox.showerror('Incorrect password', 'Your password is invalid. Please try again.')
-                                    login = False
-                                    return login
-                                if recorded_password == password:
-                                    pass
-                            else:
-                                messagebox.showerror('User not found', 'The username is invalid. Please try again.')
-                                login = False
-                                return login
-        if account_list.is_file() == False:
-            with open('accounts.csv', 'w') as new_file:
+    def validate_database():
+        account_list = Path('./accounts.csv').is_file()
+        if account_list:
+            db_exist = True
+            return db_exist
+        else:
+            with open('accounts.csv', 'w', newline='') as new_file:
                 writer = csv.writer(new_file)
                 writer.writerow(['username',  'password', 'is_positive', 'vacc_status', 'symptoms', 'expose_symptoms', 'is_close_contact', 'has_been_tested', 'phone_number', 'email'])
-            messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you. Please make an account first!")
-            login = False
-            return login
+                messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you.")
+                db_exist = True
+                return db_exist
+    
+    def authenticate(username, password):
+        print('active')
+        with open('accounts.csv', 'r') as user_list:
+
+            user_list_reader = csv.reader(user_list, delimiter=',')
+            next(user_list_reader, None)
+
+            user_exist = False
+            while user_exist == False:
+                for row in user_list_reader:
+                    typed_credentials = [username, password]
+                    if row == typed_credentials:
+                        login = True
+                        return login
+                if user_exist == False:
+                    messagebox.showerror("Invalid Credentials", "The password and/or username is invalid. Please try again.")
+                    login = False
+                    return

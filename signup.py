@@ -40,16 +40,21 @@ class Signup:
         confirm_password_entry.place(x = 170,y = 160)
 
         def login_try():
-            username = str(new_username.get())
-            password = str(new_password.get())
-            validate = str(confirm_password.get())
-            print(validate)
-            print(password)
-            if password != validate:
-                messagebox.showerror('password incorrect', 'The password does not match. Please try again!')
-            login = Signup.createAccount(username, password)
-            if login == True:
-                login_window.destroy()
+            db_exist = Signup.validate_database()
+            if db_exist == True:
+                username = str(new_username.get())
+                password = str(new_password.get())
+                validate = str(confirm_password.get())
+                print(validate)
+                print(password)
+                if password != validate:
+                    messagebox.showerror('password incorrect', 'The password does not match. Please try again!')
+                    return
+                username_genuine = Signup.searchAccount(username)
+                if username_genuine == True:
+                    is_made = Signup.new_account(username, password)
+                    if is_made == True:
+                        login_window.destroy()
         login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=200)
@@ -79,15 +84,46 @@ class Signup:
         show_password_again.place(x=380, y=157)
         login_window.mainloop()
     
-    def createAccount(username, password):
-        account_list = Path('./accounts.csv')
-        print(account_list)
-        if account_list.is_file():
-            pass
-        if account_list.is_file() == False:
-            with open('accounts.csv', 'w') as new_file:
+    def validate_database():
+        account_list = Path('./accounts.csv').is_file()
+        if account_list:
+            db_exist = True
+            return db_exist
+        else:
+            with open('accounts.csv', 'w', newline='') as new_file:
                 writer = csv.writer(new_file)
                 writer.writerow(['username',  'password', 'is_positive', 'vacc_status', 'symptoms', 'expose_symptoms', 'is_close_contact', 'has_been_tested', 'phone_number', 'email'])
-            messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you. Please make an account first!")
-            login = False
-            return login
+                messagebox.showinfo('Database created',"The application doesn't have a database yet, so we've made one for you.")
+                db_exist = True
+                return db_exist
+        
+    def searchAccount(username):
+        duplicate = False
+        with open('accounts.csv', 'r') as new_user:
+
+            username_list = []
+
+            reader = csv.reader(new_user)
+            next(reader, None)
+            for row in reader:
+                print(row)
+                username_list.append(row[0])
+            for item in username_list:
+                print(item)
+                if duplicate == True:
+                    return
+                if item == username:
+                    duplicate = True
+                    messagebox.showerror('Username already taken', "This username has already been taken! Please choose a different one.")
+                    username_genuine = False
+                    return username_genuine
+        if duplicate == False:
+            username_genuine = True
+            return username_genuine
+        new_user.close()
+    
+    def new_account(username, password):
+        with open('accounts.csv', 'a',newline='') as my_file:
+            writer = csv.writer(my_file)
+            writer.writerow([username, password])
+            my_file.close()
