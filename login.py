@@ -87,7 +87,8 @@ class Login:
             while user_exist == False:
                 for row in user_list_reader:
                     typed_credentials = [username, password]
-                    if row == typed_credentials:
+                    recorded = [row[0], row[1]]
+                    if recorded == typed_credentials:
                         login = True
                         return login
                 if user_exist == False:
