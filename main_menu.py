@@ -33,11 +33,11 @@ class main_menu:
 
         welcome_splash = LabelFrame(window, text='Welcome!')
         welcome_splash.pack(expand='yes', fill='both')
-        first_label = Label(welcome_splash , text= "Please click to your destination.")
-        first_label.place(x=110, y=30)
+        first_label = Label(welcome_splash , text= "Press 'Get Started' to begin.")
+        first_label.place(x=130, y=30)
 
-        signup = Button(welcome_splash, text="Sign up", command=signup_prompt).place(x=150, y=70)
-        exit_button = Button(welcome_splash, text="close PyTracer", command=close_app).place(x=150, y=150)
+        signup = Button(welcome_splash, text="Get Started", command=signup_prompt).place(x=160, y=70)
+        exit_button = Button(welcome_splash, text="close PyTracer", command=close_app).place(x=150, y=130)
 
         window.mainloop()
 
@@ -74,11 +74,11 @@ class main_menu:
             health_check.locate_info()
         hdf_start = partial(hdf_start)
 
-        user_setting = Button(side_bar, text= "User Settings")
+        user_setting = Button(side_bar, text= "About PyTracer")
         user_setting.place(x=70, y=70)
-        hdf_maker = Button(side_bar, text='Update Health Information', command=hdf_start)
+        hdf_maker = Button(side_bar, text='Create HDF Log', command=hdf_start)
         hdf_maker.place(x=70, y=110)
-        print_hdf = Button(side_bar, text= "Generate HDF Report")
+        print_hdf = Button(side_bar, text= "Search HDF Log")
         print_hdf.place(x=70, y=150)
         logout = Button(side_bar, text= "Log Out", command=logout_user)
         logout.place(x=70, y=190)
