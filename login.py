@@ -5,7 +5,7 @@ from functools import partial
 from subprocess import call
 from pathlib import Path
 import csv
-import main_menu
+from main_menu import main_menu
 
 class Login:
     
@@ -53,7 +53,12 @@ class Login:
                 password = str(logpass.get())
                 login = Login.authenticate(username, password)
                 if login == True:
+                    with open('active_session.csv', 'w') as active_session:
+                        writer = csv.writer(active_session)
+                        writer.writerow([username])
+                    active_session.close()
                     login_window.destroy()
+                    main_menu.user_menu(username)
         login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=130, y=170)
@@ -89,16 +94,9 @@ class Login:
                     typed_credentials = [username, password]
                     recorded = [row[0], row[1]]
                     if recorded == typed_credentials:
-                        Login.login_start(username)
                         login = True
                         return login
                 if user_exist == False:
                     messagebox.showerror("Invalid Credentials", "The password and/or username is invalid. Please try again.")
                     login = False
                     return
-                
-    def login_start(username):
-        with open('active_session.csv', 'w') as active_session:
-            writer = csv.writer(active_session)
-            writer.writerow([username])
-        active_session.close()
