@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
-from subprocess import call
 from pathlib import Path
 import csv
 from main_menu import main_menu
@@ -10,10 +9,9 @@ from main_menu import main_menu
 class Login:
     
     def prompt():
-
         def return_prompt():
             login_window.destroy()
-            call(["python", "pycontact.py"])
+            main_menu.startup()
 
         return_prompt = partial(return_prompt)
     
@@ -58,7 +56,7 @@ class Login:
                         writer.writerow([username])
                     active_session.close()
                     login_window.destroy()
-                    main_menu.user_menu(username)
+                    main_menu.user_menu()
         login_try = partial(login_try)
 
         go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=130, y=170)

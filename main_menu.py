@@ -3,12 +3,54 @@ from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
 from subprocess import call
+from health_decla_system import health_check
 import datetime
 import csv
 
 class main_menu:
     
-    def user_menu(username):
+    def startup():
+        from login import Login
+        from signup import Signup
+        def login_prompt():
+            window.destroy()
+            Login.prompt()
+
+        login_prompt = partial(login_prompt)
+
+        def signup_prompt():
+            window.destroy()
+            Signup.new_registry()
+
+        signup_prompt = partial(signup_prompt)
+
+        def close_app():
+            confirm = messagebox.askquestion('Exit PyTracer', 'Do you wish to exit the app?')
+
+            if confirm == 'yes':
+                window.destroy()
+            else:
+                return
+            
+        close_app = partial(close_app)
+
+        window = Tk()
+
+        window.title("PyTracer Contact Tracing App")
+        window.geometry('400x200')
+
+        welcome_splash = LabelFrame(window, text='Welcome!')
+        welcome_splash.pack(expand='yes', fill='both')
+        first_label = Label(welcome_splash , text= "Please click to your destination.")
+        first_label.place(x=110, y=30)
+
+        signup = Button(welcome_splash, text="Sign up", command=signup_prompt).place(x=110, y=70)
+        exit_button = Button(welcome_splash, text="close PyTracer", command=close_app).place(x=150, y=150)
+        login = Button(welcome_splash, text='Log in', command=login_prompt).place(x=230, y=70)
+
+        window.mainloop()
+
+    def user_menu():
         date_now = datetime.datetime.now()
         date_string = date_now.strftime('%c')
         menu_window = Tk()
@@ -20,7 +62,7 @@ class main_menu:
         side_bar = Canvas()
         side_bar.create_line(300, 0, 300, 300, dash = (5, 2))
         side_bar.pack(expand='yes', fill='both')
-        first_label = Label(side_bar , text= "Welcome, " + username)
+        first_label = Label(side_bar , text= "Main Menu")
         first_label.place(x=120, y=30)
         second_label = Label(side_bar, text= "Date and Time:").place(x=360, y=100)
         date_time = Label(side_bar, text=date_string).place(x=335, y=140)
@@ -36,10 +78,14 @@ class main_menu:
                 call(["python", "pycontact.py"])
         logout_user = partial(logout_user)
 
+        def hdf_start():
+            menu_window.destroy()
+            health_check.locate_info()
+        hdf_start = partial(hdf_start)
 
         user_setting = Button(side_bar, text= "User Settings")
         user_setting.place(x=70, y=70)
-        hdf_maker = Button(side_bar, text='Create Health Declaration Form')
+        hdf_maker = Button(side_bar, text='Update Health Information', command=hdf_start)
         hdf_maker.place(x=70, y=110)
         print_hdf = Button(side_bar, text= "Generate HDF Report")
         print_hdf.place(x=70, y=150)
