@@ -54,7 +54,6 @@ class health_check:
         login_window.mainloop()
 
     def symptom_check():
-        from main_menu import main_menu
         def return_prompt():
             login_window.destroy()
             health_check.locate_info()
@@ -115,7 +114,6 @@ class health_check:
         login_window.mainloop()
     
     def vacc_test_status():
-        from main_menu import main_menu
         def return_prompt():
             login_window.destroy()
             health_check.symptom_check()
@@ -175,7 +173,6 @@ class health_check:
         login_window.mainloop()
 
     def contact_info():
-        from main_menu import main_menu
         def return_prompt():
             login_window.destroy()
             health_check.vacc_test_status()
@@ -184,7 +181,7 @@ class health_check:
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
-        login_window.geometry('500x400')
+        login_window.geometry('500x500')
 
         login_Frame = LabelFrame(login_window, text='Health Declaration Form (4/4)')
         login_Frame.pack(expand='yes', fill='both')
@@ -192,18 +189,21 @@ class health_check:
         first_label.place(x=175, y=30)
         second_label = Label(login_Frame, text="Part 04 of 04")
         second_label.place(x=205, y=50)
-        question_1 = Label(login_Frame, text = "Email:").place(x = 40, y = 80)
-        question_2 = Label(login_Frame, text = "Contact Number:",).place(x = 40, y = 160)
-
+        question_1 = Label(login_Frame, text = "Name:").place(x = 40, y = 80)
+        question_2 = Label(login_Frame, text = "Contact Number",).place(x = 40, y = 160)
+        question_3 = Label(login_Frame, text = "Email:",).place(x = 40, y = 240)
         first_a = StringVar()
         second_a = StringVar()
+        third_a = StringVar()
 
         answer_01 = Entry(login_Frame,width = 40, textvariable=first_a)
         answer_01.place(x = 40, y = 120) 
         answer_02 = Entry(login_Frame, width = 40, textvariable=second_a)
         answer_02.place(x = 40,y = 200)
+        answer_03 = Entry(login_Frame,width = 40, textvariable=third_a)
+        answer_03.place(x = 40,y = 280)
 
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=270)
-        go_back = Button(login_Frame, text="Next part").place(x=280, y=270)
+        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=400)
+        go_back = Button(login_Frame, text="Next Part").place(x=280, y=400)
 
         login_window.mainloop()
