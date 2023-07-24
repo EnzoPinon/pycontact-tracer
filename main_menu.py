@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
-from subprocess import call
 from health_decla_system import health_check
 import datetime
 import csv
@@ -75,7 +74,7 @@ class main_menu:
                 print("button clicked")
                 main_menu.end_session()
                 menu_window.destroy()
-                call(["python", "pycontact.py"])
+                main_menu.startup()
         logout_user = partial(logout_user)
 
         def hdf_start():

@@ -24,20 +24,18 @@ class Signup:
         login_Frame.pack(expand='yes', fill='both')
         first_label = Label(login_Frame , text= "Get Started")
         first_label.place(x=215, y=30)
-        second_label = Label(login_Frame, text="Part 01: account information")
-        second_label.place(x=175, y=50)
-        user_name = Label(login_Frame, text = "Username:").place(x = 40, y = 80)
-        passcode = Label(login_Frame, text = "Your password:",).place(x = 40, y = 120)
-        passcode = Label(login_Frame, text = "Confirm password:",).place(x = 40, y = 160)
+        user_name = Label(login_Frame, text = "Username:").place(x = 40, y = 60)
+        passcode = Label(login_Frame, text = "Your password:",).place(x = 40, y = 100)
+        passcode = Label(login_Frame, text = "Confirm password:",).place(x = 40, y = 140)
 
         new_username = StringVar()
         new_password = StringVar()
         confirm_password = StringVar()
-        user_name_input_area = Entry(login_Frame,width = 30, textvariable=new_username).place(x = 170, y = 80) 
+        user_name_input_area = Entry(login_Frame,width = 30, textvariable=new_username).place(x = 170, y = 60) 
         user_password_entry_area = Entry(login_Frame, show='*',width = 30, textvariable=new_password)
-        user_password_entry_area.place(x = 170,y = 120)
+        user_password_entry_area.place(x = 170,y = 100)
         confirm_password_entry = Entry(login_Frame, show='*',width = 30, textvariable=confirm_password)
-        confirm_password_entry.place(x = 170,y = 160)
+        confirm_password_entry.place(x = 170,y = 140)
 
         def login_try():
             from login import Login
@@ -58,11 +56,12 @@ class Signup:
                 if username_genuine == True:
                     Signup.new_account(username, password)
                     login_window.destroy()
+                    messagebox.showinfo("Account Registered", "Thank you for using PyTracer! Your account has been created. Please login with this account to get started!")
                     Login.prompt()
         login_try = partial(login_try)
 
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=200)
-        go_back = Button(login_Frame, text="Register", command=login_try).place(x=280, y=200)
+        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=180)
+        go_back = Button(login_Frame, text="Register", command=login_try).place(x=280, y=180)
 
         def password_show():
             if user_password_entry_area.cget('show') == '':
@@ -83,9 +82,9 @@ class Signup:
         password_show_2 = partial(password_show_2)
 
         show_password = Button(login_Frame, text='show', command=password_show)
-        show_password.place(x=380, y=117)
+        show_password.place(x=380, y=97)
         show_password_again = Button(login_Frame, text='show', command=password_show_2)
-        show_password_again.place(x=380, y=157)
+        show_password_again.place(x=380, y=137)
         login_window.mainloop()
     
     def validate_database():
@@ -113,6 +112,7 @@ class Signup:
                 print(row)
                 username_list.append(row[0])
             new_user.close()
+
         for item in username_list:
             print(item)
             if duplicate == True:
