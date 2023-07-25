@@ -3,7 +3,6 @@ from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
 import datetime
-import csv
 
 class health_check:
     
@@ -54,11 +53,6 @@ class health_check:
         login_window.mainloop()
 
     def symptom_check():
-        def return_prompt():
-            login_window.destroy()
-            health_check.locate_info()
-
-        return_prompt = partial(return_prompt)
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
@@ -108,17 +102,11 @@ class health_check:
         made_contact.place(x=140, y=290)
         no_contact = Radiobutton(login_Frame, text='No', value='made_symptom_contact', indicatoron=False)
         no_contact.place(x=280, y=290)
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=370)
         go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=370)
 
         login_window.mainloop()
     
     def vacc_test_status():
-        def return_prompt():
-            login_window.destroy()
-            health_check.symptom_check()
-
-        return_prompt = partial(return_prompt)
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
@@ -169,17 +157,11 @@ class health_check:
         made_contact.place(x=140, y=300)
         no_contact = Radiobutton(login_Frame, text='No', value='no_close_contact',indicatoron=False)
         no_contact.place(x=280, y=300)
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=380)
         go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=380)
 
         login_window.mainloop()
 
     def contact_info():
-        def return_prompt():
-            login_window.destroy()
-            health_check.vacc_test_status()
-
-        return_prompt = partial(return_prompt)
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
@@ -205,7 +187,17 @@ class health_check:
         answer_03 = Entry(login_Frame,width = 40, textvariable=third_a)
         answer_03.place(x = 40,y = 280)
 
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=400)
         go_back = Button(login_Frame, text="Next Part").place(x=280, y=400)
 
         login_window.mainloop()
+
+    def hdf_make(answer_01, answer_02, answer_03, answer_04):
+        # create file:
+        with open("My_record.txt",'a') as new_hdf:
+            new_hdf.write("==============================Health Declaration Form==============================")
+            new_hdf.write("\n\n-Part 01: Travel Information-")
+            new_hdf.write("\nNext Destination: ", answer_01)
+            new_hdf.write("Date of Travel: ", answer_02)
+            new_hdf.write("Recent Destination: ", answer_04)
+            new_hdf.write("Date of Last Travel: ", answer_03)
+
