@@ -122,7 +122,7 @@ class health_check:
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
-        login_window.geometry('500x800')
+        login_window.geometry('500x450')
 
         login_Frame = LabelFrame(login_window, text='Health Declaration Form (3/4)')
         login_Frame.pack(expand='yes', fill='both')
@@ -132,43 +132,45 @@ class health_check:
         second_label.place(x=205, y=50)
         question_1 = Label(login_Frame, text = "Vaccination Status:").place(x = 40, y = 80)
         # first dose, second dose, booster, 2nd booster,  unvaccinated
-        question_2 = Label(login_Frame, text = "Have you been tested for <insert Disease here>?",).place(x = 40, y = 350)
+        question_2 = Label(login_Frame, text = "Have you been tested for <insert Disease here>?",).place(x = 40, y = 170)
         #No, Yes-Pending, Yes-Negative, Yes-Positive
-        question_3 = Label(login_Frame, text = "Have you been in contact with someone who's a probable/confirmed case?",).place(x = 40, y = 560)
+        question_3 = Label(login_Frame, text = "Have you been in contact with someone who's a probable/confirmed case?",).place(x = 40, y = 260)
 
-        first_a = StringVar()
-        second_a = StringVar()
+        vacc_choice = StringVar()
+        tester_choice = StringVar()
         third_a = StringVar()
-        fourth_a = StringVar()
+
+        vacc_choice.set("choose from dropdown...")
+        tester_choice.set("choose from dropdown...")
         def part02():
             login_window.destroy()
             health_check.contact_info()
         part02 = partial(part02)
 
-        made_contact = Radiobutton(login_Frame, text='Unvaccinated', value='0',indicatoron=False)
-        made_contact.place(x=40, y=120)
-        no_contact = Radiobutton(login_Frame, text='First Dose', value='1',indicatoron=False)
-        no_contact.place(x=40, y=160)
-        made_contact = Radiobutton(login_Frame, text='Second Dose (Fully Vaccinated)', value='2',indicatoron=False)
-        made_contact.place(x=40, y=200)
-        no_contact = Radiobutton(login_Frame, text='First Booster', value='3',indicatoron=False)
-        no_contact.place(x=40, y=240)
-        made_contact = Radiobutton(login_Frame, text='Second Booster', value='4',indicatoron=False)
-        made_contact.place(x=40, y=300)
-        no_contact = Radiobutton(login_Frame, text='No', value='no_test',indicatoron=False)
-        no_contact.place(x=40, y=390)
-        made_contact = Radiobutton(login_Frame, text='Yes-Pending', value='pending_test',indicatoron=False)
-        made_contact.place(x=40, y=430)
-        no_contact = Radiobutton(login_Frame, text='Yes-Negative', value='test_negative',indicatoron=False)
-        no_contact.place(x=40, y=470)
-        made_contact = Radiobutton(login_Frame, text='Yes-Positive', value='test_positive',indicatoron=False)
-        made_contact.place(x=40, y=510)
+        vacc_choices = [
+            "unvaccinated",
+            'first dose',
+            'second dose (Fully Vaccinated)',
+            "First Booster",
+            "Second Booster"
+        ]
+
+        test_choices =[
+            "No",
+            "Yes-Pending",
+            "Yes-Negative",
+            "Yes-Positive"
+        ]
+        vacc_status = OptionMenu(login_Frame, vacc_choice, *vacc_choices)
+        vacc_status.place(x=40, y=120)
+        test_status = OptionMenu(login_Frame,  tester_choice, *test_choices)
+        test_status.place(x=40, y=210)
         made_contact = Radiobutton(login_Frame, text='Yes', value='close_contact',indicatoron=False)
-        made_contact.place(x=140, y=600)
+        made_contact.place(x=140, y=300)
         no_contact = Radiobutton(login_Frame, text='No', value='no_close_contact',indicatoron=False)
-        no_contact.place(x=280, y=600)
-        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=680)
-        go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=680)
+        no_contact.place(x=280, y=300)
+        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=380)
+        go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=380)
 
         login_window.mainloop()
 
