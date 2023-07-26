@@ -75,8 +75,13 @@ class main_menu:
             menu_window.destroy()
             main_menu.search_HDF()
         hdfsearch_start = partial(hdfsearch_start)
+        
+        def about_show():
+            menu_window.destroy()
+            main_menu.AboutPyTracer()
+        about_show = partial(about_show)
 
-        user_setting = Button(side_bar, text= "About PyTracer")
+        user_setting = Button(side_bar, text= "About PyTracer", command=about_show)
         user_setting.place(x=70, y=70)
         hdf_maker = Button(side_bar, text='Create HDF Log', command=hdf_start)
         hdf_maker.place(x=70, y=110)
@@ -88,7 +93,33 @@ class main_menu:
         menu_window.mainloop()
 
     def AboutPyTracer():
-        pass
+        def return_prompt():
+            window.destroy()
+            main_menu.user_menu()
+
+        return_prompt = partial(return_prompt)
+
+        window = Tk()
+
+        window.title("PyTracer Contact Tracing App")
+        window.geometry('500x350')
+
+        welcome_splash = LabelFrame(window, text='About PyTracer')
+        welcome_splash.pack(expand='yes', fill='both')
+        first_label = Label(welcome_splash , text= "PyTracer: A Contact Tracing App in Python.")
+        first_label.place(x=120, y=30)
+        description = Label(welcome_splash , text= "PyTracer is an Open Source Contact Tracing App written purely in Python\nby Lorenzo Pinon, a Computer Engineering student of the\nPolytechnic University of the Philippines (Sta. Mesa Branch).\n\nOur Goal:\n\nTo provide a user-friendly and reliable Contact Tracing app to all establishments\nwithout the need to pay anything.")
+        description.place(x=30, y=70)
+
+        def go_to_repo():
+            import webbrowser
+            webbrowser.open('https://github.com/EnzoPinon/pycontact-tracer')
+        go_to_repo = partial(go_to_repo)
+
+        print_hdf = Button(welcome_splash, text= "View Our Repository", command=go_to_repo)
+        print_hdf.place(x=70, y=250)
+        logout = Button(welcome_splash, text= "Back to Menu", command=return_prompt)
+        logout.place(x=300, y=250)
 
     def search_HDF():
         def return_prompt():
