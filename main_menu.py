@@ -62,8 +62,6 @@ class main_menu:
             if confirm_logout == 'no':
                 return
             if confirm_logout == 'yes':
-                print("button clicked")
-                main_menu.end_session()
                 menu_window.destroy()
                 main_menu.startup()
         logout_user = partial(logout_user)
@@ -73,11 +71,16 @@ class main_menu:
             health_check.locate_info()
         hdf_start = partial(hdf_start)
 
+        def hdfsearch_start():
+            menu_window.destroy()
+            main_menu.search_HDF()
+        hdfsearch_start = partial(hdfsearch_start)
+
         user_setting = Button(side_bar, text= "About PyTracer")
         user_setting.place(x=70, y=70)
         hdf_maker = Button(side_bar, text='Create HDF Log', command=hdf_start)
         hdf_maker.place(x=70, y=110)
-        print_hdf = Button(side_bar, text= "Search HDF Log")
+        print_hdf = Button(side_bar, text= "Search HDF Log", command=hdfsearch_start)
         print_hdf.place(x=70, y=150)
         logout = Button(side_bar, text= "Log Out", command=logout_user)
         logout.place(x=70, y=190)
@@ -86,3 +89,86 @@ class main_menu:
 
     def AboutPyTracer():
         pass
+
+    def search_HDF():
+        def return_prompt():
+            login_window.destroy()
+            main_menu.user_menu()
+
+        return_prompt = partial(return_prompt)
+    
+        login_window = Tk()
+        login_window.title("PyTracer Contact Tracing App")
+        login_window.geometry('500x400')
+
+        login_Frame = LabelFrame(login_window, text='Search HDF Forms')
+        login_Frame.pack(expand='yes', fill='both')
+        first_label = Label(login_Frame , text= "Search an HDF Generated Form")
+        first_label.place(x=175, y=30)
+        second_label = Label(login_Frame, text="All parts are required.")
+        second_label.place(x=205, y=50)
+        question_1 = Label(login_Frame, text = "Name:").place(x = 40, y = 80)
+        question_2 = Label(login_Frame, text = "Date (MM-DD-YYYY Format, separated by dashes):",).place(x = 40, y = 160)
+        question_3 = Label(login_Frame, text = "Time (HH:MM, separated by colon. Use 0000 format.):",).place(x = 40, y = 240)
+
+        first_a = StringVar()
+        second_a = StringVar()
+        third_a = StringVar()
+
+        def part02(ans01, ans02, ans03):
+            import subprocess
+            import datetime
+            import os
+            ans01 = first_a.get()
+            ans02 = second_a.get()
+            ans03 = third_a.get()
+            fulltime = ans02 + ' ' + ans03
+
+            try:
+                testdate = datetime.datetime.strptime(fulltime, '%m-%d-%Y %H:%M')
+            except ValueError:
+                return messagebox.showerror("Invalid date/time Format", "The date and time provided is in an invalid format.\nPlease follow the format mentioned.\n\nDate: MM-DD-YYYY (ex: 01-01-2000)\nTime: HH:MM in 0000hr format (ex: 13:00)")
+            mydate = datetime.datetime.strptime(fulltime, '%m-%d-%Y %H:%M')
+            year = mydate.strftime('%Y')
+            day = mydate.strftime('%j')
+            hour = mydate.strftime('%H')
+            minute = mydate.strftime('%M')
+
+            check = main_menu.filesearch(ans01, year, day, hour, minute)
+            if check == True:
+                filename = ans01 + '-' + year + '-' + day + '-' + hour + '-' + minute + '.txt'
+                login_window.destroy()
+                subprocess.Popen(['notepad', os.path.join('./HDF_generations/' + filename)])
+                messagebox.showinfo("HDF Opened", "An HDF has been found with the given parameters and has been displayed.")
+                main_menu.user_menu()
+            if check == False:
+                messagebox.showerror("No HDF Found", "We couldn't find an HDF at the given information.\nEnsure that your date, name, and time are at the right format.\n\nDate: MM-DD-YYYY (ex: 01-01-2000)\nTime: HH:MM in 0000 format (ex: 13:00)")
+
+        part02 = partial(part02, first_a, second_a, third_a)
+        answer_01 = Entry(login_Frame,width = 40, textvariable=first_a)
+        answer_01.place(x = 40, y = 120) 
+        answer_02 = Entry(login_Frame, width = 40, textvariable=second_a)
+        answer_02.place(x = 40,y = 200)
+        answer_03 = Entry(login_Frame,width = 40, textvariable=third_a)
+        answer_03.place(x = 40,y = 280)
+
+        go_back = Button(login_Frame, text="Go Back", command=return_prompt).place(x=140, y=320)
+        go_back = Button(login_Frame, text="Search",command=part02).place(x=280, y=320)
+
+        login_window.mainloop()
+    
+    def filesearch(name, year, day, hour, minute):
+
+        filename = name + '-' + year + '-' + day + '-' + hour + '-' + minute + '.txt'
+        import os
+        
+        hdf_list = os.listdir('./HDF_generations')
+        is_found = False
+        for name in hdf_list:
+            if name == filename:
+                is_found = True
+
+        return is_found
+                
+
+            
