@@ -4,7 +4,6 @@ from tkinter.ttk import Label, LabelFrame
 from functools import partial
 from health_decla_system import health_check
 import datetime
-import csv
 
 class main_menu:
     
@@ -85,14 +84,5 @@ class main_menu:
 
         menu_window.mainloop()
 
-    def user_settings():
+    def AboutPyTracer():
         pass
-
-    def end_session():
-        print("end session active")
-        with open('active_session.csv', 'w') as my_file:
-            writer = csv.writer(my_file)
-            writer.writerow(" ")
-            print("Ended session")
-            my_file.close()
-        return
