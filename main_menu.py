@@ -153,6 +153,8 @@ class main_menu:
             ans01 = first_a.get()
             ans02 = second_a.get()
             ans03 = third_a.get()
+            if ans01 == '' or ans02 == '' or ans03 == '':
+                return messagebox.showerror("All Fields required", "All fields are required. Please answer all of them.")
             fulltime = ans02 + ' ' + ans03
 
             try:

@@ -2,15 +2,17 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Label, LabelFrame
 from functools import partial
-import datetime
 
 class health_check:
     
     def locate_info():
         from main_menu import main_menu
         def return_prompt():
-            login_window.destroy()
-            main_menu.user_menu()
+            confirm = messagebox.askquestion("Confirm Exit", "Are you sure you want to return to the Main Menu?\nAll of your progress will be discarded.")
+            if confirm == 'yes':
+                login_window.destroy()
+                main_menu.user_menu()
+            else: return
 
         return_prompt = partial(return_prompt)
     
@@ -39,6 +41,8 @@ class health_check:
             ans02 = second_a.get()
             ans03 = third_a.get()
             ans04 = fourth_a.get()
+            if ans01 == '' or ans02 == '' or ans03 == '' or ans04 == '':
+                return messagebox.showerror("All Fields required", "All fields are required. Please answer all of them.")
             login_window.destroy()
             health_check.hdf_make(ans01, ans02, ans03, ans04)
             health_check.symptom_check()
@@ -59,6 +63,16 @@ class health_check:
         login_window.mainloop()
 
     def symptom_check():
+        from main_menu import main_menu
+        import os
+        def return_prompt():
+            confirm = messagebox.askquestion("Confirm Exit", "Are you sure you want to return to the Main Menu?\nAll of your progress will be discarded.")
+            if confirm == 'yes':
+                login_window.destroy()
+                os.remove('./HDF_generations/My_records.txt')
+                main_menu.user_menu()
+            else: return
+        return_prompt = partial(return_prompt)
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
@@ -129,6 +143,8 @@ class health_check:
             if doot12 == 1:
                 symptomlist.append("Does not have any of the symptoms Listed")
             
+            if len(symptomlist) == 0 or constat == '1':
+                return messagebox.showerror("All Fields required", "All fields are required. Please answer all of them.")
             login_window.destroy()
             sympcheck_stat = health_check.symptom_hdf(symptomlist, constat)
             health_check.vacc_test_status(sympcheck_stat)
@@ -163,12 +179,23 @@ class health_check:
         made_contact.place(x=140, y=290)
         no_contact = Radiobutton(login_Frame, text='No', value='no_symptom_contact', indicatoron=False, variable=didcontact)
         no_contact.place(x=280, y=290)
+        go_back = Button(login_Frame, text="Return to Menu", command=return_prompt).place(x=140, y=370)
         go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=370)
 
         login_window.mainloop()
     
     def vacc_test_status(sympcheck_stat):
-    
+        from main_menu import main_menu
+        import os
+        def return_prompt():
+            confirm = messagebox.askquestion("Confirm Exit", "Are you sure you want to return to the Main Menu?\nAll of your progress will be discarded.")
+            if confirm == 'yes':
+                login_window.destroy()
+                os.remove('./HDF_generations/My_records.txt')
+                main_menu.user_menu()
+            else: return
+        return_prompt = partial(return_prompt)
+
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
         login_window.geometry('500x450')
@@ -187,7 +214,7 @@ class health_check:
 
         vacc_choice = StringVar()
         tester_choice = StringVar()
-        third_a = StringVar()
+        third_a = StringVar(login_Frame, "1")
 
         vacc_choice.set("choose from dropdown...")
         tester_choice.set("choose from dropdown...")
@@ -195,6 +222,8 @@ class health_check:
             vaccchoice = vacc_choice.get()
             testerchoice = tester_choice.get()
             yesno = third_a.get()
+            if vaccchoice is "choose from dropdown..." or testerchoice == 'choose from dropdown...' or yesno == '1':
+                return messagebox.showerror("All Fields required", "All fields are required. Please answer all of them.")
             login_window.destroy()
             testcheckstat = health_check.vacc_hdf(sympcheck_stat, vaccchoice, testerchoice, yesno)
             health_check.contact_info(testcheckstat)
@@ -222,11 +251,22 @@ class health_check:
         made_contact.place(x=140, y=300)
         no_contact = Radiobutton(login_Frame, text='No', value='no_close_contact',indicatoron=False, variable=third_a)
         no_contact.place(x=280, y=300)
+        go_back = Button(login_Frame, text="Return to menu", command=return_prompt).place(x=140, y=380)
         go_back = Button(login_Frame, text="Next Part", command=part02).place(x=280, y=380)
 
         login_window.mainloop()
 
     def contact_info(sympcheck_stat):
+        from main_menu import main_menu
+        import os
+        def return_prompt():
+            confirm = messagebox.askquestion("Confirm Exit", "Are you sure you want to return to the Main Menu?\nAll of your progress will be discarded.")
+            if confirm == 'yes':
+                login_window.destroy()
+                os.remove('./HDF_generations/My_records.txt')
+                main_menu.user_menu()
+            else: return
+        return_prompt = partial(return_prompt)
     
         login_window = Tk()
         login_window.title("PyTracer Contact Tracing App")
@@ -250,6 +290,8 @@ class health_check:
             name = first_a.get()
             number = second_a.get()
             email =  third_a.get()
+            if name == '' or number == '' or email == '':
+               return messagebox.showerror("All Fields required", "All fields are required. Please answer all of them.")
             login_window.destroy()
             finalstat = health_check.wrapup(sympcheck_stat, name, email, number)
             if finalstat == False:
@@ -266,6 +308,7 @@ class health_check:
         answer_03 = Entry(login_Frame,width = 40, textvariable=third_a)
         answer_03.place(x = 40,y = 280)
 
+        go_back = Button(login_Frame, text="return to menu", command=return_prompt).place(x=140, y=400)
         go_back = Button(login_Frame, text="Finish", command=finisher)
         go_back.place(x=280, y=400)
 
@@ -359,7 +402,8 @@ class health_check:
             import datetime
             day = datetime.datetime.now()
             date_created = day.strftime('%c')
-            new_hdf.print("HDF Generated on: " + date_created)
+            new_hdf.write("HDF Generated on: " + date_created)
+            new_hdf.write("\nView this Open Source Contact Tracing App here: https://github.com/EnzoPinon/pycontact-tracer")
             new_hdf.close()
 
         mydate = datetime.datetime.now()
